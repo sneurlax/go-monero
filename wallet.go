@@ -6,7 +6,7 @@ type WalletClient struct {
 
 // start wallet rpc server:
 //win .\monero-wallet-rpc.exe --rpc-login user:pass --wallet-file D:\work\text\admin\admin --rpc-bind-ip 127.0.0.1 --rpc-bind-port 18082
-func NewWalletClient(endpoint, username, password string) *WalletClient {
+func NewWalletClient(endpoint, username string, password string) *WalletClient {
 	return &WalletClient{NewCallClient(endpoint, username, password)}
 }
 

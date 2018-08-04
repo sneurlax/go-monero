@@ -53,9 +53,9 @@ func NewCallClient(endpoint, username, password string) *CallClient {
 
 func (c *CallClient) Daemon(method string, req, rep interface{}) error {
 	client := &http.Client{}
-	reqest, _ := http.NewRequest("POST", c.endpoint, EncodeClientRequest(method, req))
-	reqest.Header.Set("Content-Type", "application/json")
-	resp, err := client.Do(reqest)
+	request, _ := http.NewRequest("POST", c.endpoint, EncodeClientRequest(method, req))
+	request.Header.Set("Content-Type", "application/json")
+	resp, err := client.Do(request)
 	if err != nil {
 		return err
 	}
@@ -65,8 +65,8 @@ func (c *CallClient) Daemon(method string, req, rep interface{}) error {
 
 func (c *CallClient) Wallet(method string, req, rep interface{}) error {
 	client := &http.Client{}
-	reqest, _ := http.NewRequest("POST", c.endpoint, EncodeClientRequest(method, req))
-	resp, err := client.Do(reqest)
+	request, _ := http.NewRequest("POST", c.endpoint, EncodeClientRequest(method, req))
+	resp, err := client.Do(request)
 	if err != nil {
 		return err
 	}
@@ -97,18 +97,18 @@ func (c *CallClient) Wallet(method string, req, rep interface{}) error {
 		response := H(strings.Join([]string{HA1, nonceHeader, nc, cnonce, qopHeader, HA2}, ":"))
 		AuthHeader := fmt.Sprintf(`Digest username="%s", realm="%s", nonce="%s", uri="%s", algorithm="%s", response="%s", qop=%s, nc=%s, cnonce="%s"`,
 			c.username, realmHeader, nonceHeader, "/json_rpc", algorithm, response, qopHeader, nc, cnonce)
-		reqests, _ := http.NewRequest("POST", c.endpoint, EncodeClientRequest(method, req))
+		requests, _ := http.NewRequest("POST", c.endpoint, EncodeClientRequest(method, req))
 		headers := http.Header{
 			"User-Agent":      []string{"AtScale"},
 			"Accept":          []string{"*/*"},
 			"Accept-Encoding": []string{"identity"},
 			"Connection":      []string{"Keep-Alive"},
-			"Host":            []string{reqest.Host},
+			"Host":            []string{request.Host},
 			"Authorization":   []string{AuthHeader},
 			"Content-Type":    []string{"application/json"},
 		}
-		reqests.Header = headers
-		resp, err := client.Do(reqests)
+		requests.Header = headers
+		resp, err := client.Do(requests)
 		if err != nil {
 			return err
 		}

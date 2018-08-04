@@ -5,8 +5,8 @@ type DaemonClient struct {
 }
 
 // Creates new daemon client
-func NewDaemonClient(endpoint string) *DaemonClient {
-	return &DaemonClient{NewCallClient(endpoint, "", "")}
+func NewDaemonClient(endpoint string, username string, password string) *DaemonClient {
+	return &DaemonClient{NewCallClient(endpoint, username, password)}
 }
 
 // Look up how many blocks are in the longest chain known to the node.
